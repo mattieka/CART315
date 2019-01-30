@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,12 +10,22 @@ public class MattiePlayerController : MonoBehaviour {
 	//variable for changing movement speed
 	public float speed;
 
+	// variables to display count and win text
+	public Text countText;
+	public Text winText;
+
 	//what the hell is this is this how u set variables in C# help
 	private Rigidbody rb;
+
+	// integer to count points
+	private int count;
 
 	// i can only assume that this is like a setup function
 	void Start() {
 		rb = GetComponent<Rigidbody>();
+		count = 0;
+		SetCountText();
+		winText.text = "";
 	}
 
 	void FixedUpdate() {
@@ -29,6 +40,25 @@ public class MattiePlayerController : MonoBehaviour {
 		rb.AddForce(movement * speed);
 
 	}
+
+	//collider stuff
+	void OnTriggerEnter(Collider other) {
+		if (other.gameObject.CompareTag("Pick Up")) {
+			other.gameObject.SetActive(false);
+			count = count + 1;
+			SetCountText();
+		}
+	}
+
+	//FUNCTIONS
+	//SET TEXT COUNT
+	void SetCountText() {
+		countText.text = "Count: " + count.ToString();
+		if (count >= 12) {
+			winText.text = "You Win!";
+		}
+	}
+
 }
 
 // NOTES & QUESTIONS:
